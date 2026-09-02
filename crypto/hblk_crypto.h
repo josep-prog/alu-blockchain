@@ -16,6 +16,10 @@
 /* Maximum length (in bytes) of a DER-encoded ECDSA signature on secp256k1 */
 #define SIG_MAX_LEN 72
 
+/* Filenames used by ec_save()/ec_load() to store the key pair on disk */
+#define PRI_FILENAME "key.pem"
+#define PUB_FILENAME "key_pub.pem"
+
 /**
  * struct sig_s - Signature structure
  *

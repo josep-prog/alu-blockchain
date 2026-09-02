@@ -25,7 +25,7 @@ int ec_save(EC_KEY *key, char const *folder)
 	if (mkdir(folder, 0755) != 0 && errno != EEXIST)
 		return (0);
 
-	snprintf(path, sizeof(path), "%s/key.pem", folder);
+	snprintf(path, sizeof(path), "%s/" PRI_FILENAME, folder);
 	fp = fopen(path, "w");
 	if (!fp)
 		return (0);
@@ -36,7 +36,7 @@ int ec_save(EC_KEY *key, char const *folder)
 	}
 	fclose(fp);
 
-	snprintf(path, sizeof(path), "%s/key_pub.pem", folder);
+	snprintf(path, sizeof(path), "%s/" PUB_FILENAME, folder);
 	fp = fopen(path, "w");
 	if (!fp)
 		return (0);
