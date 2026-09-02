@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <openssl/sha.h>
 #include <openssl/ec.h>
+#include <openssl/ecdsa.h>
+#include <openssl/pem.h>
 #include <openssl/obj_mac.h>
 
 /* The elliptic curve used throughout this project */
