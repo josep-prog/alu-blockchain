@@ -5,6 +5,28 @@
 #define EC_PATH_MAX 4096
 
 /**
+ * _load_pub_key - Loads the public key stored in <folder>/key_pub.pem
+ * @folder: Path to the folder from which to load the public key
+ *
+ * Return: A pointer to the loaded EC_KEY, or NULL upon failure
+ */
+static EC_KEY *_load_pub_key(char const *folder)
+{
+	char path[EC_PATH_MAX];
+	FILE *fp;
+	EC_KEY *pub_key;
+
+	snprintf(path, sizeof(path), "%s/" PUB_FILENAME, folder);
+	fp = fopen(path, "r");
+	if (!fp)
+		return (NULL);
+	pub_key = PEM_read_EC_PUBKEY(fp, NULL, NULL, NULL);
+	fclose(fp);
+
+	return (pub_key);
+}
+
+/**
  * ec_load - Loads an EC key pair from the disk
  * @folder: Path to the folder from which to load the keys
  *
@@ -15,7 +37,7 @@ EC_KEY *ec_load(char const *folder)
 {
 	char path[EC_PATH_MAX];
 	FILE *fp;
-	EC_KEY *key = NULL;
+	EC_KEY *key, *pub_key;
 
 	if (!folder)
 		return (NULL);
@@ -29,20 +51,14 @@ EC_KEY *ec_load(char const *folder)
 	if (!key)
 		return (NULL);
 
-	snprintf(path, sizeof(path), "%s/" PUB_FILENAME, folder);
-	fp = fopen(path, "r");
-	if (!fp)
+	pub_key = _load_pub_key(folder);
+	if (!pub_key || !EC_KEY_set_public_key(key, EC_KEY_get0_public_key(pub_key)))
 	{
+		EC_KEY_free(pub_key);
 		EC_KEY_free(key);
 		return (NULL);
 	}
-	if (!PEM_read_EC_PUBKEY(fp, &key, NULL, NULL))
-	{
-		fclose(fp);
-		EC_KEY_free(key);
-		return (NULL);
-	}
-	fclose(fp);
+	EC_KEY_free(pub_key);
 
 	return (key);
 }
