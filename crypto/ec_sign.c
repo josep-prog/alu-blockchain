@@ -16,6 +16,7 @@
 uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg,
 		size_t msglen, sig_t *sig)
 {
+	uint8_t hash[SHA256_DIGEST_LENGTH];
 	unsigned int len;
 
 	if (!key || !msg || !sig)
@@ -23,7 +24,11 @@ uint8_t *ec_sign(EC_KEY const *key, uint8_t const *msg,
 
 	memset(sig->sig, 0, SIG_MAX_LEN);
 
-	if (!ECDSA_sign(0, msg, (int)msglen, sig->sig, &len, (EC_KEY *)key))
+	if (!SHA256((unsigned char const *)msg, msglen, hash))
+		return (NULL);
+
+	if (!ECDSA_sign(0, hash, SHA256_DIGEST_LENGTH, sig->sig, &len,
+				(EC_KEY *)key))
 		return (NULL);
 
 	sig->len = len;
