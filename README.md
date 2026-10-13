@@ -129,6 +129,22 @@ gcc -Wall -Wextra -Werror -pedantic -I. -o block_is_valid-test \
 	-L../../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread
 ```
 
+## blockchain/v0.2 - Block mining
+
+Same functions as v0.1 (serialized files use version `0.2`), plus proof of
+work. `block_is_valid` also checks that a Block's hash matches its difficulty.
+
+| File | Function | Description |
+| --- | --- | --- |
+| `hash_matches_difficulty.c` | `hash_matches_difficulty` | Checks that a hash has enough leading zero bits |
+| `block_mine.c` | `block_mine` | Finds a nonce so the Block's hash matches its difficulty |
+| `blockchain_difficulty.c` | `blockchain_difficulty` | Computes the difficulty of the next Block |
+
+```
+cd blockchain/v0.2
+make
+```
+
 ## blockchain/v0.3 - Transactions
 
 Adds transactions (UTXO model) on top of the Block mining functions.
