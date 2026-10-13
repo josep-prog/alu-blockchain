@@ -12,10 +12,14 @@
 #define HBLK_MAGIC "HBLK"
 #define HBLK_VERSION "0.2"
 
-/* Expected number of seconds between two Blocks */
+/* How often (in seconds) a Block should be found */
+#ifndef BLOCK_GENERATION_INTERVAL
 #define BLOCK_GENERATION_INTERVAL 1
-/* Number of Blocks between two difficulty adjustments */
+#endif
+/* How often (in Blocks) the difficulty should be adjusted */
+#ifndef DIFFICULTY_ADJUSTMENT_INTERVAL
 #define DIFFICULTY_ADJUSTMENT_INTERVAL 5
+#endif
 
 #define GENESIS_TIMESTAMP 1537578000
 #define GENESIS_DATA "Holberton School"
