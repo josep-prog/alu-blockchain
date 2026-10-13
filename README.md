@@ -176,3 +176,32 @@ version `0.3`.
 cd crypto && make
 cd ../blockchain/v0.3 && make libhblk_blockchain.a
 ```
+
+## cli
+
+A small command interpreter to interact with the Blockchain library
+(`blockchain/v0.3`). A wallet (EC key pair) is created at startup, or loaded
+from a folder given as argument.
+
+```
+cd cli
+make
+./cli            # new wallet
+./cli <folder>   # load the wallet stored in <folder>
+```
+
+| Command | Description |
+| --- | --- |
+| `wallet_load <path>` | Load wallet (EC key pair) from a folder |
+| `wallet_save <path>` | Save wallet in a folder, in PEM format |
+| `send <amount> <address>` | Create a signed transaction and add it to the transaction pool |
+| `mine` | Mine a Block holding a coinbase transaction and the valid pending transactions |
+| `info` | Display the number of Blocks, unspent outputs and pending transactions |
+| `load <path>` | Load a Blockchain from a file, overriding the local one |
+| `save <path>` | Save the local Blockchain into a file |
+| `help` / `exit` | List the commands / quit |
+
+Coins come from mining: each mined Block gives 50 coins to the wallet. An
+unspent output used by a pending transaction cannot be used by another one
+until a Block is mined, so sending several transactions before mining
+requires several unspent outputs (mine a few Blocks first).
