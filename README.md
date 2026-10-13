@@ -128,3 +128,35 @@ gcc -Wall -Wextra -Werror -pedantic -I. -o block_is_valid-test \
 	test/block_is_valid-main.c \
 	-L../../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread
 ```
+
+## blockchain/v0.3 - Transactions
+
+Adds transactions (UTXO model) on top of the Block mining functions.
+Transaction sources are in `blockchain/v0.3/transaction/`.
+
+| Function | Description |
+| --- | --- |
+| `tx_out_create` | Creates a transaction output |
+| `unspent_tx_out_create` | Creates an unspent transaction output |
+| `tx_in_create` | Creates a transaction input from an unspent output |
+| `transaction_hash` | Computes the ID (hash) of a transaction |
+| `tx_in_sign` | Signs a transaction input with the sender's private key |
+| `transaction_create` | Builds and signs a transaction between two wallets |
+| `transaction_is_valid` | Checks whether a transaction is valid |
+| `coinbase_create` | Creates the coinbase transaction of a Block |
+| `coinbase_is_valid` | Checks whether a coinbase transaction is valid |
+| `transaction_destroy` | Deletes a transaction |
+| `update_unspent` | Updates the list of unspent outputs after a Block |
+
+The Block functions (`block_create`, `block_destroy`, `block_hash`,
+`block_is_valid`, `blockchain_create`, `blockchain_destroy`,
+`blockchain_serialize`, `blockchain_deserialize`) are updated to handle the
+list of transactions and the list of unspent outputs. Serialized files use
+version `0.3`.
+
+### Build
+
+```
+cd crypto && make
+cd ../blockchain/v0.3 && make libhblk_blockchain.a
+```
