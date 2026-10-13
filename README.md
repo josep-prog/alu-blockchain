@@ -96,3 +96,35 @@ targeted.
   the funds' owner authorized it, and that the transaction wasn't altered
   in transit — all without the private key ever being transmitted or
   revealed.
+
+## blockchain/v0.1 - Data structures
+
+| File | Function | Description |
+| --- | --- | --- |
+| `blockchain_create.c` | `blockchain_create` | Creates a Blockchain holding the Genesis Block |
+| `block_create.c` | `block_create` | Creates a Block linked to the previous one |
+| `block_destroy.c` | `block_destroy` | Deletes a Block |
+| `blockchain_destroy.c` | `blockchain_destroy` | Deletes a Blockchain and all its Blocks |
+| `block_hash.c` | `block_hash` | Computes the SHA256 hash of a Block |
+| `blockchain_serialize.c` | `blockchain_serialize` | Saves a Blockchain into a file |
+| `blockchain_deserialize.c` | `blockchain_deserialize` | Loads a Blockchain from a file |
+| `block_is_valid.c` | `block_is_valid` | Checks that a Block is valid |
+
+### Build
+
+The `llist` library must be installed (`llist.h` and `libllist.so`).
+
+```
+cd blockchain/v0.1
+make
+```
+
+This produces `libhblk_blockchain_v0.1.a`. Test programs are in `test/`:
+
+```
+gcc -Wall -Wextra -Werror -pedantic -I. -o block_is_valid-test \
+	blockchain_create.c block_create.c block_destroy.c \
+	blockchain_destroy.c block_hash.c block_is_valid.c \
+	test/block_is_valid-main.c \
+	-L../../crypto -lhblk_crypto -lllist -lssl -lcrypto -pthread
+```
